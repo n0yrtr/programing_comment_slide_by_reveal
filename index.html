@@ -16,8 +16,124 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+					どんなときにコメントをつけますか？
+
+					---
+
+					### コメントを付ける理由
+					* なにをしているのか実装の説明
+					* こうなっている理由を書く
+					* 経緯
+					* ドキュメンテーションコメント（JavaDocなど）
+					* コメントアノテーション
+
+					>>>
+
+					✘ なにをしているのか実装の説明
+
+					---
+
+					### 絶対に書くなと言うわけではないが、実装でどうにかならないかを考える。
+					```
+					// .
+					// .
+					// .
+						// キャンペーンが開催されていれば適用を行う。
+						
+						//.
+						//.
+						//.
+						//データの取得等
+						//.
+						//.
+						//.
+
+						if(foo == hoge && bar == huga) {
+							// ほげほげ　且つ　ふがふがの場合キャンペーン開催中
+							//キャンペーン中は100ポイントプラス
+							point += 100
+					 	}
+
+					```
+
+					>>>
+
+					###### リファクタ後
+
+					```
+					//.
+					//.
+					//.
+					/** キャンペーン適用時追加ポイント */
+					private static final Integer CAMPAIGN_ADD_POINT = 100;
+
+					//.
+					//.
+					//.
+						final Integer afterAppliedCampaignPoint = applyCampaignIfCampaignHold(point)
+					//.
+					//.
+					//.
+
+					/**
+					 * キャンペーン開催中であれば、キャンペーンの適用を行う。
+					 * @param beforePoint キャンペーン適用前のポイント
+					 * @return キャンペーン適用後のポイント
+					 */
+					Integer applyCampaignIfCampaignHold(Integer beforePoint) {
+
+						//.
+						//.
+						//.
+						//データの取得等
+						//.
+						//.
+						//.
+
+						boolean isCampaignHolding = foo == hoge && bar == huga
+						if (isCampaignHonding) {
+							return beforePoint + CAMPAIGN_ADD_POINT
+						}
+						return beforePoint
+					}
+					```
+
+					---
+
+					### アノテーションコメント
+					* TODO:　未実装
+					* FIXME:　不具合あり
+					* HACK:　要リファクタリング
+					* XXX:　じぶんでもわかりませーん
+					* 他にあるらしい。僕は使ったことないです。https://qiita.com/taka-kawa/items/673716d77795c937d422
+					
+					---
+
+					### メソッド名は結構ここを参考にすることが多いです。
+					https://qiita.com/KeithYokoma/items/2193cf79ba76563e3db6
+
+					メソッドの付け方をコード規約に書いておくと良いかも。
+
+					---
+
+					### このコード分かりづらいなと思う気持ちは大事。
+
+					* コメントを書かなくてもリファクタリングで、なんとかなるなら
+						出来るだけやっていることのコメントは書かない。
+					* コメントを書いて読みやすくなったと、安心しない。
+
+					>>>
+
+					### このコード分かりづらいなと思う気持ちは大事。
+
+					* 諸事情により
+						リファクタで解決できない場合は、コメントを書く。
+					* 英語じゃなくて日本語でコメントが残ることに意味がある？
+						* 各ユビキタス言語の　日本語↔英語　はできれば最初に作っておきたい。
+						* そうすれば関係者間で言葉がぶれないし、知らない言葉はでてきにくくなる。
+						* ユビキタス言語の範囲外でわかりづらさを感じる部分は致し方無し
+				</section>
 			</div>
 		</div>
 
