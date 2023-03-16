@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+					どんなときにコメントをつけますか？
+
+					---
+
+					### コメントを付ける理由
+
+					>>>
+
+					* なにをしているのか実装の説明
+
+					>>>
+
+					* こうなっている理由を書く
+
+					>>>
+
+					* 経緯
+
+					>>>
+
+					* ドキュメンテーションコメント（JavaDocなど）
+
+					>>>
+
+					* コメントアノテーション
+
+					>>>
+
+					✘ なにをしているのか実装の説明
+
+					---
+
+					### 絶対に書くなと言うわけではないが、実装でどうにかならないかを考える。
+					```
+					public class Hoge {
+
+						public void hoge() {
+							・
+							・
+							・
+
+							// キャンペーンが開催されていれば適用を行う。
+							.
+							. データの取得等
+							.
+							
+							if(foo == hoge && bar == huga) {
+								// ほげほげ　且つ　ふがふがの場合キャンペーン開催中
+								//キャンペーン中は100ポイントプラス
+								point += 100
+							}
+
+							・
+							・
+							・
+					 	}
+
+
+					```
+
+					>>>
+
+					リファクタ後
+
+					```
+					/**
+					 * ほげほげを担うクラス
+					 */
+					public class Hoge {
+
+						/** キャンペーン適用時追加ポイント */
+						private static final Integer CAMPAIGN_ADD_POINT = 100;
+
+						/**
+						 * ほげほげする
+					 	 */
+						public void hoge() {
+							・
+							・
+							・
+								final Integer afterAppliedCampaignPoint = applyCampaignIfCampaignHold(point)
+							・
+							・
+							・
+						}
+
+						/**
+						 * キャンペーン開催中であれば、キャンペーンの適用を行う。
+						 * @param beforePoint キャンペーン適用前のポイント
+						 * @return キャンペーン適用後のポイント
+						 */
+						Integer applyCampaignIfCampaignHold(Integer beforePoint) {
+
+							・
+							・データの取得等
+							・
+
+							boolean isCampaignHolding = foo == hoge && bar == huga
+							if (isCampaignHonding) {
+								return beforePoint + CAMPAIGN_ADD_POINT
+							}
+							return beforePoint
+						}
+					}
+					```
+
+					---
+
+					### アノテーションコメント
+
+					* TODO:　未実装
+					* FIXME:　不具合あり
+					* HACK:　要リファクタリング
+					* XXX:　じぶんでもわかりませーん
+
+					>>>
+
+					他にあるらしい。僕は使ったことないです。
+					https://qiita.com/taka-kawa/items/673716d77795c937d422
+					
+					---
+
+					### メソッド名は結構ここを参考にすることが多いです。
+					https://qiita.com/KeithYokoma/items/2193cf79ba76563e3db6
+
+					メソッドの付け方をコード規約に書いておくと良いかも。
+
+					---
+
+					### このコード分かりづらいなと思う気持ちは大事。
+
+					>>>
+
+					* コメントを書かなくてもリファクタリングで、なんとかなるなら
+						出来るだけやっていることのコメントは書かない。
+
+					>>>
+
+					* コメントを書いて読みやすくなったと、安心しない。
+
+					>>>
+
+					### 英語じゃなくて日本語でコメントが残ることに意味がある？
+					
+					>>>
+
+					* 各ユビキタス言語の　日本語↔英語　はできれば最初に作っておきたい。
+
+					>>>
+
+					* そうすれば関係者間で言葉がぶれないし、知らない言葉はでてきにくくなる。
+					
+					>>>
+
+					* ユビキタス言語の範囲外でわかりづらさを感じる部分は書いても良いかも
+					
+					>>>
+
+					* 諸事情により
+						リファクタで解決できない場合は、コメントを書く。
+
+					* (読み辛いなと思ったまま放置しないで)
+
+
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
