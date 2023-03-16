@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+					# 知っておくと良いコードを書くときの軸となるプログラミングの原理原則格言
+					
+					>>>
+					
+					## 目次
+					 - DRYの原則
+
+					---
+
+					### DRYの原則
+
+					>>>
+
+					TODO:説明	
+
+					>>>
+
+					どこまでDRYである必要があるか
+					どこまでがDRYじゃない？
+					同じ処理をしていたら。
+					処理の呼び出しの一連の流れはＤＲＹじゃないわけではない。
+
+					けど一連の流れに名前をつけれるなら名前をつけて、それを呼び出しするだけでいいよねー。って出来ると思う。DRYのための修正ではなく、名前をつけることで可読性をあげるって話。
+
+					引数もマジックナンバーじゃなければOK
+
+
+					---
+
+					## マジックナンバー(ICE Break)
+
+					>>>
+
+					## マジックナンバー
+					どこまでがマジックナンバー？
+					よくある0とかをZERO=0
+					これは定数化しても結局マジックナンバー
+
+					defaultValue的な名前で解決するならそれで良いのだけど。
+					名前がいまいちつけづらいものはなくても良いのかも。
+					for文のi=0
+					↑あ、マジックナンバーだ！！！って警察にならないように。
+					むしろこれ定数化したらむしろ読みにくいでしょ？
+
+					---
+
+					## Tell Don't Ask(求めるな、命じよ)
+					質問として
+					Serviceに全部書いてあるほうが、何してるかわかるじゃんみたいな。
+
+					読む人がどこの情報がほしいかわからないし、
+					基本的にすべてを一度に理解するのは人には不可能。
+					であればメソッドが分割されていて、メソッド名からそこの中でやってそうなことを
+					イメージができれば、読む人は今はこの中は必要ないなとなれば、その中を見るのは後回しにして、
+					ほんとうに今必要な情報を探すのに次に進めば良い。
+					というふうに情報取捨選択ができる。
+					トランザクションスクリプトになると、情報の取捨選択がしにくく、
+					すべてに目を通さないと行けないというのが問題。
+
+					---
+
+
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
