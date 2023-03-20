@@ -16,25 +16,41 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+				<section>
+					<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+						## どんなときにコメントをつけますか？
+					</section>
+					<section>
+						<h2> コメントの内容 </h2>
+						<div class="fragment highlight-green" data-fragment-index="6">
+							<p class="fragment fade-in" data-fragment-index="1">
+								〇 実装がこうなっている理由
+							</p>
+							<p class="fragment fade-in" data-fragment-index="2">
+								〇 経緯
+							</p>
+							<p class="fragment fade-in" data-fragment-index="3">
+								〇 ドキュメンテーションコメント(JavaDocなど)
+							</p>
+							<p class="fragment fade-in" data-fragment-index="4">
+								〇 コメントアノテーション(TODOなど)
+							</p>
+						</div>
+						<div class="fragment highlight-red" data-fragment-index="7">
+							<p class="fragment fade-in" data-fragment-index="5">
+								✘ なにをしているのか実装の説明
+							</p>
+						</div>
+					</section>
+					<section>
+						<h2> ✘ なにをしているのか実装の説明 </h2>
+						<p>
+							コードのわかりづらさをリファクタリングではなく<br />
+							コメントで補っている可能性がある。
+						</p>
+					</section>
+				</section>
 				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
-					どんなときにコメントをつけますか？
-
-					---
-
-					### コメントを付ける理由
-
-					<p class="fragment">* なにをしているのか実装の説明</p>
-					<p class="fragment">* こうなっている理由を書く</p>
-					<p class="fragment">* 経緯</p>
-					<p class="fragment">* ドキュメンテーションコメント（JavaDocなど）</p>
-					<p class="fragment">* コメントアノテーション</p>
-
-					>>>
-
-					✘ なにをしているのか実装の説明
-
-					---
-
 					### 絶対に書くなと言うわけではないが、実装でどうにかならないかを考える。
 					```
 					public class Hoge {
