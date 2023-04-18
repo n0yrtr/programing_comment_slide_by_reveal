@@ -8,7 +8,7 @@
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+		<link rel="stylesheet" href="dist/theme/solarized.css" id="theme">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
@@ -16,13 +16,86 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+				<section>
+					<section>
+							<div style="color: #268bd2">
+								知っておくと良いかも<br />
+								コードを書くときの軸となる
+							</div>
+							<br />
+							<h1 class="r-fit-text">
+								プログラミングの
+								<span style="color: #cb4b16">原理・原則・格言</span>
+							</h1>
+							<br /><br /><br />
+					</section>
+					<section>
+						<h2>目次</h2>
+						<ul>
+							<li>何故、原理・原則・格言を知っておいた方がよいか。</li>
+							<li>DRYの原則</li>
+							<ul>
+								<li>DRYってどこまでやるか？</li>
+								<li>マジックナンバー</li>
+								<li> 匂うコード</li>
+							</ul>
+							<li>Tell Don't Ask(求めるな、命じよ)</li>
+							<li>SOLID原則</li>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>何故、原理・原則・格言を<br>知っておくとよいか。</h3>
+					</section>
+					<section>
+						原理・原則・格言の存在をしらなくても<br />
+						こう書いた方がより良いよねというのを<br />
+						理解しているのであればよいのでは
+					</section>
+					<section>
+						<h4>メリット</h4>
+						共通の言葉を使うことで、<br /><span style="color: #268bd2">迅速</span>かつ<span style="color: #268bd2">正確</span>に意味を伝えることができ、<br />
+						効率的にコミュニケーションができる。
+					</section>
+					<section>
+						わざわざ難しい言葉を使うのは<br />知識をひけらかしたいだけでは？<br />
+						<span style="color: #AAA;" class="fragment fade-in">→ ちょっとあるかもｗ</span>
+						<br />
+						<br />
+						僕的にはどんどん使って<br />
+						社内のユビキタス言語となれば良いと思うので<br />
+						使うことで浸透させたい。<br />
+					</section>
+					<section>
+						積極的にその言葉使うことで、
+						<br />覚えるのも理解も早くなる
+					</section>
+					<section>
+						しっかり理解ができてないとしても<br />
+						なんか知っている状況だなと思ったら<br />
+						その言葉を使ってみてよいと思っている。<br />
+						<span style="color: #AAA;" class="fragment fade-in">→ あ！これ！ 信〇ゼミでやったやつだ！</span><br />
+					</section>
+					<section>
+						間違ってたら間違ってたで教えて貰えるので<br />
+						より理解も深まる。
+						<br />
+					</section>
+					<section>	
+		
+							マジックナンバーだよ → 定数化されてない数字だよ
+							だけじゃなく、魔法の数字が解決してくれるなんてすごいね！って意味を伝えるのとでは違う。
+							```java 
+							private final Integer ZERO = 0;
+							```
+							マジックナンバーのままやないか！ってなる。
+							
+					</section>
+				</section>
+
 				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
-					# 知っておくと良いコードを書くときの軸となるプログラミングの原理原則格言
 					
-					>>>
-					
-					## 目次
-					 - DRYの原則
+				
 
 					---
 
@@ -51,46 +124,49 @@
 
 					どこまでDRYである必要があるか
 					同じことをかいていたら？全部？
-					 → 密結合になりすぎる。
+					→ 密結合になりすぎる。
 
 					>>>
 
-					処理の呼び出しの一連の流れはＤＲＹじゃない?
+					<h3>処理の呼び出しの一連の流れはＤＲＹじゃない?</h3>
 
 					>>>
 
-					判断が難しい。
+					<h4>判断が難しい。<h4>
+					盲目的に同じ処理は共通化するというような設計にしていると、
+					変な依存が生まれてメンテナンス性が悪くなったり、設計を崩さないといけなくなったりということが起こる。</br>
+					偶然同じようなコードになったからと言って共通化するのではなく、</br>
+					共通化するときは、<b>同様の責務</b>であるべきかどうかを考えて共通化する。
 
 					>>>
 
-					僕の思うDRYの限度
+					<h4>僕の思う同様の責務かどうかを判断する軸</h4>
 					命名がうまくできるなら、それは共通化するべき
 					できないならそこまででよいのでは。
 
 					結局はDDDの
 					> コンテキストが異なるのであれば同じ名前でも別物になる
 					というのと一緒。
-
+					// TODO 挿絵（前のチームの）
 					>>> 
 
 					別物なのに同じものであるかのように命名してしまうと？
 
 					- 密結合ではあってはいけない部分で密結合になってしまう。
-
-					- DDDの話ではクラスなので、単一責任の原則がまもれなくなる。
-
-					- 今回のDRY原則の場合は密結合ではあってはいけない部分で密結合になってしまう。
 					（一方には関係のない修正でも影響してしまう。）
+
+					- クラスの場合は、単一責任の原則がまもれなくなる。
 
 					>>>
 
 					3行程度のメソッド呼び出し同じ処理が各地に散らばる場合
 
-					これにメソッド名をつけるときに失敗するとリファクリング後の方が匂うコードになる可能性がある。
+					これにメソッド名をつけるときに失敗するとリファクリング後の方が逆に匂うコードになる可能性がある。
 
 					>>>
 
-					なぜかというと、メソッド名的にはこれを使えば良さそうだけど、その場面では少し処理が違うが多発するから。
+					なぜかというと、メソッド名的にはこれを使えば良さそうだけど、「その場面では少し処理が違う」
+					というのが多発するから。
 
 					>>>
 
@@ -120,7 +196,6 @@
 
 					どこまでがマジックナンバー？
 					
-
 					>>>
 
 					0とかをZERO=0
@@ -134,6 +209,12 @@
 					↑あ、マジックナンバーだ！！！って警察にならないように。
 					むしろこれ定数化したらむしろ読みにくいでしょ？
 
+					マジックナンバーだよ → 定数化されてない数字だよ
+					だけじゃなく、魔法の数字が解決してくれるなんてすごいね！っていみを伝えるのとでは違う。
+					```java 
+					public final Integer ZERO = 0;
+					```
+					マジックナンバーのままやないか！ってなる。
 
 					>>>
 
@@ -152,9 +233,11 @@
 					---
 
 					## Tell Don't Ask(求めるな、命じよ)
+
+					<b>ドメインモデル貧血症</b>
 					質問として
 					Serviceに全部書いてあるほうが、何してるかわかるじゃんみたいな。
-
+					
 					読む人がどこの情報がほしいかわからないし、
 					基本的にすべてを一度に理解するのは人には不可能。
 					であればメソッドが分割されていて、メソッド名からそこの中でやってそうなことを
@@ -168,7 +251,9 @@
 
 					---
 
-
+					### SOLID 原則
+					#### 単一責務の原則
+					Reference 神クラス/神オブジェクト
 
 
 				</section>
@@ -185,7 +270,7 @@
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
-
+				slideNumber: true,
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});

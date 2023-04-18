@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+					# Serializedとはなにか。
+
+					>>>
+					
+					## 目次
+					- Serializedとはなにか。
+					- 何故必要か。
+
+					---
+
+					### Serialized
+					直列化と訳されるが、
+					簡単に言うとファイルに保存出来る状態。
+					例えば、テキストファイルに書き込むことが出来るかということ。
+
+					例えばJavaObjectはJavaランタイム上のメモリ上でしか読み込むことが出来ず、
+					そのままでは、ファイルに書き込むことができない。
+					Json文字列に変換すれば、Jsonとしてファイルに書き込むことが出来る。
+
+					ここで、疑問として、JavaObjectもデバッグしたら中身見えるんだからそのままでも書き込めそうなもんだけど。
+					デバッグツールが一種のSerializedをしていると考えて良い。人間が見やすいシリアラズをしてデバッグツールで表示している。
+
+					Javaの場合SeriarzableインターフェースをつけるとJava Objectをbyte列に変換することが出来るようになる。
+
+					Java Objectももともとbyte列じゃないんか！
+					やっかいなのはpointer ファイルに書き込めると言うことはそのファイルからJava Objectに復元出来ないといけない。
+					例えばclass A { private String b } みたいなクラスのinstanceがあった場合、
+					直列化せずにファイルに書き込んだ場合、classAの構造情報 ＋bへのポインター が書き込まれる。
+					ポインタはそのときのメモリのポインタを保持しているだけなので、復元したときにはｂへのポインターを使っても違う値が取得できない。
+
+					じゃあ、bへのポインターは値をとってきておいて、書き込むようにしたら良いやんとなるけど、それが直列化という行為。
+					ポインターなどで、複数箇所にあるメモリ上のbyte列たちを、一つのbyte列に直すと思うと直列化という言葉が入って気安い。
+					この内容を図にしたい。
+
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+					# Staticおじさんはなぜだめなのか。
+					
+					>>>
+					
+					## 目次
+					- そもそもStatic(静的)とはどういうことか。
+					- Singletonである必要。
+
+					---
+
+					### そもそもStatic(静的)とはどういうことか。
+
+					メモリの確保がプログラム起動時。
+					必要なときにメモリを確保するのは動的（newしたときに確保される）。
+					それに対して静的
+
+					メモリって何だろう。
+					基本的には一時的な記憶領域と言われているが、
+					要はプログラムの変数が代表的なもの。
+					アプリケーション単位でメモリ容量見れるのはそういうこと。
+					実装の中で、DBに保存したり、ファイルに保存したものはDB,ファイルシステムに後は委ねるので、
+					アプリケーション単位の容量というものはない。
+					（アプリケーション専用のディレクトリを持っているようなこともあるので、概念がないわけではない。）
+
+					---
+
+					### Singletonである必要。
+					使う側に強要する場合、privateコンストラクタで外からnew出来なくしたクラスでにstatic変数を持たせるやり方で十分に思える。
+
+					>>>>
+
+					#### 結局は以下の回答の2つ目のコメントのようにこのクラスのインスタンスは唯一無二であることを
+					シングルトンパターンでの実装という共通理解から伝わると。
+					[./images/singleton_vs_static.png]()
+					シングルトンが存在しない世界で、シングルトンの方が良い！となる理由は
+					オプジェクト指向の世界で、唯一無二を表現しようと思うとstaticでは表現しきれていないので、
+					getinstanceメソッドなどをつくると、結果としてシングルトンになると。
+
+					##### staticはオブジェクト指向の世界からは少し隔離された世界かも。
+					staticな変数のememy_lifeがあると一人倒すと全員死ぬ。ふつうはありえない。
+					逆に言うと、enemyをシングルトンにしようとすると、その段階で敵一人しかいないとなるので、
+					敵が一人しかいないことを明確化している。
+					敵が一人の訳ないだろ！ってなるならシングルトンじゃないねとなるので、現実とオブジェクトを投影出来ている。
+
+					>>>> 
+					
+					##### 唯一無二を表現しようと思うとほんとにシングルトンになるか？
+					何かシングルトンが似合う現実世界のものはあるだろうか。
+					Entityという概念があり、それはDBレベルで唯一無二なので、
+					prograｍレベルで唯一無二を表現するというのは、
+					オブジェクト指向の中でも、現実をオブジェクトに反映したと言うよりは
+					プログラムの仕組みをオブジェクトに反映したものに近いから、なかなか良い例が見つからないかも。
+
+					→ 後書きだけど、さっきのenemyの例を考えると現実と背理は反映はできてそうなので、
+					逆パターンのSingletonであることに違和感がない例であれば、反映出来る良い例があるかも。
+					>>>>
+
+					#### その他シングルトンのメリット
+					##### Life-time
+					- シングルトンの場合はオブジェクトの初期化〜プログラムの終了
+					- スタティックの場合はクラスがロードされる時〜プログラムの終了
+					##### Abstraction
+					- シングルトンの場合は可能
+					- スタティックの場合は不可
+					
+					例えばAppConfigをシングルトンで作る際、AppConfigだけではなく、WindowsAppConfigが必要なのであれば、継承が出来る。
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
