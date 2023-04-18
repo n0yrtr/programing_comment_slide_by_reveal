@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+					# セッションは何故Statelessではないのか。
+					
+					>>>
+					
+					## 目次
+					- Statelessとはどういうことか。
+					- セッションは何故Statelessではないのか。
+					- どうしたらよいのか。
+
+					---
+
+					### Statelessとはどういうことか。
+					#### RESTのS
+					- <strong>クライアント</strong>の状態を<strong>サーバー側</strong>で持たないこと。
+					
+					ユーザーの状態ではなく、<strong>クライアント</strong>（Webサイトではブラウザ）の状態
+					を持たないこと。
+					
+					ユーザーの状態は会員テーブルなどで少なくとも保持していることが多い。
+					
+					---
+
+					### セッションは何故Statelessではないのか。
+					セッションは<strong>どのブラウザ</strong>がどのユーザーでログインしているという情報を
+					<strong>サーバー側</strong>で保持しているため、Statelessに違反している。
+					
+					### トークンを使った認証ではなぜ、Statelessになるのだろうか。
+					tokenが送られてきて、そのtokenを使ってDBからユーザー情報を取り出しているのであれば、それはSessionと全く一緒。
+
+					jwt等を使いtokenの中にユーザー情報を持たせることにより、サーバーには保持しない。
+					じゃあ、直接userIdを送れば良いじゃんとなるがそうすると、ユーザーが他人のuserIdを送ることが出来てしまう。
+					そのためそのjwtを複合、暗号化できるのはサーバーのみとすることで、
+					悪意のあるユーザーが自由にトークンを読み取ったり、書き換えたりできないので偽装を出来なくする。
+					
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
