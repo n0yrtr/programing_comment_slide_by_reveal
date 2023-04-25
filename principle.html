@@ -249,13 +249,43 @@
 
 					[参考：わけるとわかる](https://irof.hateblo.jp/entry/2020/11/07/003624)
 
-					---
+					</section>
+					<section>
+						<section>
+							<h3> SOLID 原則 </h3>
+						</section>
+						<section>
+							- S 単一責務の原則
+							- O 開放閉鎖の原則
+							- L リスコフ置換の原則
+							- I インターフェース原則
+							- D 依存性逆転の原則
+						</section>
+						
 
-					### SOLID 原則
-					#### 単一責務の原則
-					Reference 神クラス/神オブジェクト
+						<section>
+							<h4> 単一責務の原則</h4>
+							Reference 神クラス/神オブジェクト
+						</section>
+						<section>
+							<h4>開放閉鎖の法則(Open-Closed-Principle:OCP)</h4>
+							拡張に開き、修正に閉じなければならない。
+						</section>
+						<section>
+							<h4>開放閉鎖の法則(Open-Closed-Principle:OCP)</h4>
+							
+							何か要素を追加するとき、
+							<span style="color: #268bd2">既存に手を入れずに</span>
+							<span style="color: #268bd2">追加が出来る</span>
+							拡張に開き 
+							　→ 何か要素を追加するとき、既存に手を入れずに追加が出来る。
+							修正に閉じる
+							　→ 変更があるとき、対象となる箇所以外は修正しなくて良い。
 
-
+							消費税の変更→これは間違いなく修正なので、この場合に拡張で対応することは出来ない
+							→ 単一責務の原則が守られていれば、修正箇所は一カ所で済むはず。
+						</section>
+					</section>
 				</section>
 			</div>
 		</div>
