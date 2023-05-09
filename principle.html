@@ -34,13 +34,11 @@
 						<ul>
 							<li>何故、原理・原則・格言を知っておいた方がよいか。</li>
 							<li>DRYの原則</li>
-							<ul>
-								<li>DRYってどこまでやるか？</li>
-								<li>マジックナンバー</li>
-								<li> 匂うコード</li>
-							</ul>
-							<li>Tell Don't Ask(求めるな、命じよ)</li>
+							<li>Tell Don't Ask</li>
+							<li>KISS</li>
+							<li>YAGNI</li>
 							<li>SOLID原則</li>
+							<ul><li>OCP</li></ul>
 					</section>
 				</section>
 				<section>
@@ -70,99 +68,437 @@
 						積極的にその言葉使うことで、
 						<br />覚えるのも理解も早くなる
 					</section>
-					<section>
+					<section><span class="r-fit-text">
 						しっかり理解ができてないとしても<br />
 						なんか知っている状況だなと思ったら<br />
-						その言葉を使ってみてよいと思っている。<br />
+						その言葉を使ってみてよいと思っている。<br /></span>
 						<span style="color: #AAA;" class="fragment fade-in">→ あ！これ！ 信〇ゼミでやったやつだ！</span><br />
 					</section>
 					<section>
-						間違ってたら間違ってたで教えて貰えるので<br />
-						より理解も深まる。
+						<span class="r-fit-text">
+							原則の認識が違ったとしても<br />
+							その場で、認識あわせが出来るので<br />
+							より理解も深まる。
+						</span>
 						<br />
-					</section>
-					<section>	
-		
-							マジックナンバーだよ → 定数化されてない数字だよ
-							だけじゃなく、魔法の数字が解決してくれるなんてすごいね！って意味を伝えるのとでは違う。
-							```java 
-							private final Integer ZERO = 0;
-							```
-							マジックナンバーのままやないか！ってなる。
-							
+						<span style="color: #AAA;" class="fragment fade-in">中学生がPardon?をすぐ覚えて、絶対忘れないのは<br/>やっぱりこすりまくってるからだと。</span><br />
 					</section>
 				</section>
-
-				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
-					
 				
+				<section>
+					<section>
+					<h3>DRYの原則</h3>
+					</section>
+					<section>
+						<h4>説明</h4>
+						Don'tRepeatYourself.<br />
+						繰り返すな。<br />
+						<blockquote style="font-size: large;">
+							コードのコピペ厳禁<br />
+							同じコードを重複して書いてはいけません。<br />
+							コードの重複でもっとも多いのは、ひとまとまりのロジックを、<br />
+							安易に別の部分にコピー＆ペーストして使用した場合です。<br />
+							これにより、同じロジックが複数箇所にばらまかれてしまいます。<br />
+						</blockquote>
+						<span style="color: #AAA; font-size: small;">引用：上田勲. プリンシプル オブ プログラミング 3年目までに身につけたい 一生役立つ101の原理原則 (Japanese Edition) (p.48). Kindle 版.</span>
+					</section>
+					
+					<section>
+						<h4>DRYってどこまでやるか？</h4>
+					</section>
+					<section>
+						https://qiita.com/yatmsu/items/b4a84c4ae78fd67a364c
+						<q> DRYはやり過ぎると、密結合になる。</q>
+					</section>
+					<section>
+						<h4>密結合</h4>
+						<span class="r-fit-text">例えば、DRYにするために<br />
+						同じ処理をしているところを<br />
+						メソッドにしそれを呼び出す形で、共通化した。<br />
+						<br />
+						<span class="fragment fade-in">あるとき、そのメソッドが修正する必要があり修正を行ったが<br />
+						一方には必要のない修正だった。<br /></span>
+						<br />
+						<span class="fragment fade-in">両方の呼び出しに影響する→<span style="color: #268bd2">密結合</span><br /></span>
+						<br />
+						<span class="fragment fade-in">
+						この場合に簡単に行われる対応内容としては、<br />
+						メソッドにフラグ引数を渡し、場合分けをメソッド内で行うなど。<br /></span></span>
+					</section>
+					<section>
+						<h4>どこまでDRYである必要があるか</h4>
+						同じことをかいていたら？全部？<br />
+						→ <span style="color: #cb4b16">密結合になりすぎる。</span><br />
+					</section>
+					<section>
+						<h4>盲目的な共通化<h4>
+						<span class="r-fit-text">
+							<span class="fragment fade-in"><span style="color: #cb4b16">盲目的に同じ処理は共通化する</span>というような設計にしていると、<br />
+							変な依存が生まれてメンテナンス性が悪くなったり、<br />
+							設計を崩さないといけなくなったりということが起こる。<br /></span>
+							<br />
+							<span class="fragment fade-in">
+							偶然同じようなコードになったからと言って共通化するのではなく、<br />
+							共通化するときは、<span style="color: #268bd2"><b>同様の責務</b></span>であるべきかどうかを考えて共通化する。</span>
+						</span>
+					</section>
+					<section>
+						<h4>別物なのに同じものであるかのように<br />命名してしまうと？</h4>
+						<br />
+						<ul>
+							<li class="fragment fade-in">
+								密結合ではあってはいけない部分で<br />密結合になってしまう。<br />
+								（一方には関係のない修正でも影響してしまう。）
+							</li>
+							<li class="fragment fade-in">クラスの場合は、<br /><span style="color: #268bd2"><b>単一責任の原則がまもれなくなる。</b></span></li>
+						</ul>
+					</section>
+					<section>
+						<h4>僕の思う同様の責務かどうかを判断する軸</h4>
+						<br />
+						<span class="fragment fade-in">命名がうまくできるなら、それは共通化するべき<br />
+						うまく命名できないならそこまででよいのでは。<br /></span>
+						<br />
+						<span class="fragment fade-in r-fit-text">
+							中でやってることをそのままメソッド名にしても良いけど、<br />
+							あまりうまく命名できていない可能性があるかもと考えても良いかも。<br />
+							※抽象化レベルがかなり低い部分は<br />
+							やっていることをそのまま書くこともあるので一概ではないかもだけど。<br />
+						</span>
+					</section>
+					<section>
+						<h4>DDDのコンテキスト違いのドメインモデルと<br />考え方は似ているかも</h4>
+						<br />
+						<span class="fragment fade-in">
+							<br />
+							<q>コンテキストが異なるのであれば<br />
+								同じ名前でも別物になる</q><br />
+							<br />
+							というのと似ている。
+						</span>
+						
+					</section>
+					<section>
+						<h4>処理をまとめるとき、<br />分けてまとめると命名しやすいかも</h4>
+						<br />
+						<span class="r-fit-text">
+							<span class="fragment fade-in">10行の処理が複数箇所に散らばっている場合。<br />
+							そのすべてを一つのメソッド名にしようとすると、<br />
+							うまい言葉が見つからない。<br />
+							</span>
+							<br />
+							<span class="fragment fade-in">
+								けど、前半5行と、後半5行に分けて考えると、<br />
+								良い名前がつけられるかもしれない。<br />
+							</span>
 
-					---
+					</section>
+					<section>
+						<span class="r-fit-text">
+							前半3行と後半3行はあることをするための<br />前処理と後処理で<br />
+							真ん中の4行は別のことをするための処理<br />のような関係の場合。<br />
+							<br />
+							<span class="fragment fade-in">
+							前半3行と後半3行を一つのクラスに<br />まとめるということも出来る。<br />
+							そのクラスにbeforeメソッド、<br />aftterメソッドを持たして利用する。<br />
+							Template Methodパターン等も使うことは出来るかも<br />
+						</span>
+						</span>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>Tell Don't Ask</h3>
+					</section>
+					<section>
+						<h4>説明</h4>
+						Tell Don't Ask<br />
+						(求めるな、命じよ)<br />
+						<blockquote style="font-size: large;">
+							結果、値を求めずにやってほしいことを命令しましょうという、<br />
+							情報隠蔽するための考え方。<br />
+						</blockquote>
+					</section>
+					<section>
+						<h4>情報隠蔽とカプセル化</h4>
+						カプセル化はモジュールにまとめること。<br />
+						情報隠蔽は操作に必要なメソッド以外は隠すこと。<br />
+						<div class="fragment fade-in">これ見たらわかる。↓<br />
+						<blockquote class="twitter-tweet"><p lang="ja" dir="ltr">このギタリストの機材説明、考え方が完全にオブジェクト指向なんだよなあ <a href="https://t.co/iqznh1HB4c">pic.twitter.com/iqznh1HB4c</a></p>&mdash; ンゴ (@k_yagisan9) <a href="https://twitter.com/k_yagisan9/status/944573317129711617?ref_src=twsrc%5Etfw">December 23, 2017</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+					</section>
+					<section>
+						<h4>洗濯機の例</h4>
+						<span class="r-fit-text">
+							<span class="fragment fade-in">｢スタート」のボタンを押せば始まれば良い。<br />
+						スタートボタンを押したときの<br />
+						各部品への信号の伝わりかたは知る必要がない。<br /></span>
+						<br />
+						<span class="fragment fade-in">この場合、メソッドとしては<br /> 命じるメソッド start()<br /> のみで良い。<br /></span></span>
 
-					### DRYの原則
-
-					>>>
-
-					#### 説明	
-
-					>>>
-
-					#### DRYってどこまでやるか？
-					https://qiita.com/yatmsu/items/b4a84c4ae78fd67a364c
-
-					> DRYはやり過ぎると、密結合になる。
-
-					例えば、DRYにするために同じ処理をしているところを
-					メソッドにしそれを呼び出す形で、共通化した。
-
-					あるとき、そのメソッドが修正する必要があり修正を行った。
-					その場合、両方の呼び出しに影響する。(密結合)
-
-					実はたとえ、修正内容が、一方の呼び出し側には必要であるが、一方には関係ない内容であっても。
-
-					>>>
-
-					どこまでDRYである必要があるか
-					同じことをかいていたら？全部？
-					→ 密結合になりすぎる。
-
-					>>>
-
-					<h3>処理の呼び出しの一連の流れはＤＲＹじゃない?</h3>
-
-					>>>
-
-					<h4>判断が難しい。<h4>
-					盲目的に同じ処理は共通化するというような設計にしていると、
-					変な依存が生まれてメンテナンス性が悪くなったり、設計を崩さないといけなくなったりということが起こる。</br>
-					偶然同じようなコードになったからと言って共通化するのではなく、</br>
-					共通化するときは、<b>同様の責務</b>であるべきかどうかを考えて共通化する。
-
-					>>>
-
-					<h4>僕の思う同様の責務かどうかを判断する軸</h4>
-					命名がうまくできるなら、それは共通化するべき
-					できないならそこまででよいのでは。
-
-					結局はDDDの
-					> コンテキストが異なるのであれば同じ名前でも別物になる
-					というのと一緒。
-					// TODO 挿絵（前のチームの）
-					>>> 
-
-					別物なのに同じものであるかのように命名してしまうと？
-
-					- 密結合ではあってはいけない部分で密結合になってしまう。
-					（一方には関係のない修正でも影響してしまう。）
-
-					- クラスの場合は、単一責任の原則がまもれなくなる。
-
-					>>>
-
+					</section>
+					<section>
+						<span class="r-fit-text">
+							setter,getterを用意する必要があるのは、<br />
+							例えば水の量、すすぎ時間などの設定ができる洗濯機の場合<br />
+							<br />
+							<span class="fragment fade-in">
+								設定ボタンがあるはずなので、<br />
+								setterをつかって設定値をsetする、<br />
+								<br />
+								</span>
+							<span class="fragment fade-in">
+								また、現状の設定値を表示する必要があるはずなので、<br />
+							getterをつかって設定値を表示する<br />
+							みたいなことがあるので、<br />
+							その場合はgetter,setterを用意すればよいのかなと。<br />
+							</span>
+						</span>
+					</section>
+					<section>
+						<h4>メリット</h4>
+						<ul>
+							<li>DRYになる。</li>
+							<li>クラスに関心事が集約される。</li>
+						</ul>
+						<br /><br /><br />
+						<h4>デメリット</h4>
+						<ul>
+							<li>クラスが肥大化する。</li>
+							<li>クラスの責務が増える。(うまくわける必要がある)</li>
+						</ul>
+					</section>
+					<section>
+						<h4>全部サービスクラスに書いている方がわかりやすくない？</h4>
+						<span class="r-fit-text">
+							Serviceに全部書いてあるほうが、<br />何してるかわかりやすい？<br />
+							<br />
+							<span class="fragment fade-in">
+								読む人がどこの情報がほしいか。<br />
+								基本的にすべてを一度に理解するのは難しい。<br />
+							</span>
+							<br />
+						</span>
+					</section>
+					<section>
+						<span class="r-fit-text">
+							メソッドが分割されていて、<br />
+							メソッド名からそこの中でやってそうなことを<br />イメージができると良い。<br />
+							<br /><br />
+							読む人が今はこのモジュールは気にしなくてよいなと、<br />
+							後回しにして、<br />
+							ほんとうに今必要な情報を探すのに次に進めば良い。<br />
+							というふうに情報取捨選択ができる。<br />
+						</span>
+					</section>
+					<section>
+						<span class="r-fit-text">トランザクションスクリプトになると、<br />
+							情報の取捨選択がしにくく、<br />
+							すべてに目を通さないといけないというのが<br />
+							問題になりやすいかなと。<br />
+						</span>
+						<br /><br />
+						[参考：わけるとわかる](https://irof.hateblo.jp/entry/2020/11/07/003624)
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>KISS</h3>
+					</section>
+					<section>
+						<h4>説明</h4>
+						KISS (Keep It Simple, Stupid)<br />
+						シンプルにしろ、バカ。<br />
+						<blockquote style="font-size: large;">
+							コードを書く時、最優先の価値を「単純性」「簡潔性」に置きます。<br />
+							新規に書く場合だけでなく、障害を修正する場合、<br />
+							機能を拡張する場合も、常に、複雑にならないよう意識して、<br />
+							コードをシンプルに保ち続けます。
+						</blockquote>
+						<span style="color: #AAA; font-size: small;">引用：上田勲. プリンシプル オブ プログラミング 3年目までに身につけたい 一生役立つ101の原理原則 (Japanese Edition) (p.40). Kindle 版.</span>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>YAGNI</h3>
+					</section>
+					<section>
+						<h4>説明</h4>
+						YAGNI (You Ain't Gonna Need It)<br />
+						必要になるまで書くな。<br />
+						<blockquote style="font-size: large;">
+							コードは「たぶん必要になるだろう」「必要になるかもしれない」で書いてはいけません。<br />
+							本当に必要になった時、必要なものだけを書く、という方針で臨みます。<br />
+							ソフトウェアの変化を完全に予測して、先回りしたコードを書くのは不可能です。<br />
+							そこは割り切って、今必要なコードだけを書くようにします。
+						</blockquote>
+						<span style="color: #AAA; font-size: small;">引用：上田勲. プリンシプル オブ プログラミング 3年目までに身につけたい 一生役立つ101の原理原則 (Japanese Edition) (p.58). Kindle 版.</span>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3> SOLID 原則 </h3>
+					</section>
+					<section>
+						<ul>
+							<li>S 単一責務の原則</li>
+							<li>O 開放閉鎖の原則</li>
+							<li>L リスコフ置換の原則</li>
+							<li>I インターフェース原則</li>
+							<li>D 依存性逆転の原則</li>
+						</ul>
+					</section>
+					<section>
+						今回は開放閉鎖の原則だけに<br />
+						焦点を当てて説明します。
+					</section>
+					<section>
+						<h4>開放閉鎖の法則(Open-Closed-Principle:OCP)</h4>
+					</section>
+					<section>
+						拡張に開き、修正に閉じなければならない。<br />
+						<br />
+						<span class="fragment fade-in">
+							何か要素を追加するとき、<br />
+							<ul>
+								<li><span style="color: #268bd2">既存に手を入れずに(修正に閉じる)</span><br /></li> 
+								<li><span style="color: #268bd2">追加が出来る(拡張に開く)</span></li>
+							</ul>
+						</span>
+					</section>
+					<section>
+						<h4>enumとInterface</h4>
+						<span class="r-fit-text">
+							<br />
+							例えばある、キャンペーンを適応するロジックがあるとする。<br />
+					</section>
+					<section>
+						<span class="r-fit-text">
+							キャンペーンの種類をenumとして定義し、<br />
+							ロジック内でeunmのSwitch文で<br />
+							キャンペーンの適応内容を実装する。<br />
+							<br />
+							<span class="fragment fade-in">キャンペーンの種類を増やすたびに、<br />
+							Switch文の中身を修正しなければならない。</span>
+						</span>
+					</section>
+					<section>
+						<span class="r-fit-text">
+							キャンペーンをInterfaceの実装として定義し、<br />
+							ロジック内ではポリモーフィズムでadopt()を<br />
+							実行した場合に処理が分岐するようにする。<br />
+							<br />
+							<span class="fragment fade-in">
+								キャンペーンの種類を増やしても、<br />
+								新しくInterfaceを継承したものを作るだけで<br />
+								既存ロジックに手を入れる必要がなくなる。<br />
+							</span>
+						</span>
+					</section>
+					<section>
+						<h4>変更には適応出来ない話</h4>
+						<span class="r-fit-text">
+							<br />
+							例えば消費税の計算方法の変更 <br />
+							<span class="fragment fade-in">
+								→ これは間違いなく修正なので、<br />
+							　この場合に拡張で対応することは出来ない。<br />
+							</span>
+							<br />
+							<span class="fragment fade-in">ちなみにDRY/単一責務の原則が守られていれば、<br />修正箇所は一カ所で済むはず。</span>
+					</section>
+					<section>
+						<h4>KISSとの両立</h4>
+						<br />
+						<span class="r-fit-text">
+							enumを使うなということ？<br />
+							<br />
+							<span class="fragment fade-in">
+								例えば単純にセレクトボックスの中身定義するものの場合、<br />
+								enumのValuesをそのままセレクトボックスに渡すだけでいいので、<br />
+								interfacceを使っても実装するものがないはず。<br />
+							</span>
+						</span>
+					</section>
+					<section>
+						<span class="r-fit-text">
+							enumがすでに存在している場合でも、<br />
+							キャンペーン適応すること自体をInterfaceとその実装で定義して、<br />
+							enumとMapで紐付けてやれば、<br />
+							後から追加はできます。<br />
+						</span>
+					</section>
+					<section>
+						<h5>どちらにしても</h5>
+						<span class="r-fit-text">
+							<br />
+							<span class="fragment fade-in">
+								入力値が1とか2とか数字で送られている場合は<br />
+								入力値をまず、enumに変換して<br />
+								キャンペーンの実装とMappingすることにはなります。<br />
+							</span>
+							<br />
+							<span class="fragment fade-in">
+								このマッピングの際に出来ればSwitchではなく、<br />
+								Mapをつかってポリモーフィズムをするというのが定石のようです。<br />
+							</span>
+							<br />
+							<span class="fragment fade-in">
+								最近は言語仕様で、<br />
+								switch文でコンパイルエラーを<br />出してくれるようになってきているので、<br />
+								それを利用してもよいかもとは<br />個人的に思っているところはあります。
+							</span>
+						</span>
+					</section>
+					<section>
+						<span class="r-fit-text">
+							ここ新しく増えそうだなと思うところに、<br />
+							開放閉鎖の原則を適応して、KISS、YAGNIとの両立をしないといけない。<br />
+							あまり心配性すぎるとKISS、YAGNIが破綻するかも。<br />
+							<br /><br />
+							<span class="fragment fade-in">うまく予測する必要がある。</span>
+						</span>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>まとめ</h3>
+					</section>
+					<section>
+						<span class="r-fit-text">
+							なんとなく雰囲気が伝わればいいです。<br />
+							<br />
+							<span class="fragment fade-in">
+							原則や格言をもとに、いざ実装すると<br />
+							あれ、でもこういう場合はどうするんだろう？<br />
+							というのがいっぱい出てきます。<br />
+							さっきの両立のはなしみたいに。<br />
+							</span>
+						</span>
+					</section>
+					<section>
+						<span class="r-fit-text">
+							でも、そういうのは、<br />
+							実際にやってみて、<br />
+							その都度、考えていくしかないと思います。<br />
+							<br />
+							<span class="fragment fade-in">
+							状況に応じて、何が適しているかは変わってくるので、<br />
+							盲目的な信仰は禁物。<br />
+							</span>
+							<br />
+					</section>
+					<section>
+						是非、今日覚えたことを<br />
+						コードレビューの際などにつかってみて、<br />
+						今回はどっちがよいのかというのを、<br />
+						議論しつつすすめてみてください。
+					</section>
+				</section>
+				
+				<section data-markdown data-separator="^\n---\n$" data-separator-vertical="^\n>>>\n$">
+					#### メモ程度のものたち
 					3行程度のメソッド呼び出し同じ処理が各地に散らばる場合
-
 					これにメソッド名をつけるときに失敗するとリファクリング後の方が逆に匂うコードになる可能性がある。
-
 					>>>
 
 					なぜかというと、メソッド名的にはこれを使えば良さそうだけど、「その場面では少し処理が違う」
@@ -173,22 +509,21 @@
 					けど一連の流れにうまく名前をつけれるなら名前をつけて、それを呼び出しするだけでいいよねー。
 					であればそうすればよい。
 
+					>>>
+
 					DRYにするためのやり方は、いろいろあるが、結局その中で良いコードにするためのTipsがあるかどうかで、
 					何でもかんでもDRY、DRYって言うなーってなる場合と、うまく共通化出来ているなーってなる場合がある
 
 					- 名前をつけることで可読性をあげる
 					- ポリモーフィズム
-					- などなど
+					
+					などなど
 
 					>>>
 
 					10行あるメソッド呼び出しだけのプログラム
 					　→しかもそれがつかいまわされるということ何かしらいいメソッド名でくくれるもの
 					引数もマジックナンバーじゃなければOK
-
-					>>>
-					
-					#### 補遺
 
 					>>>
 
@@ -203,89 +538,46 @@
 					というかZEROは別のものを同じ名前で共通化している例
 					本当に数学的な数値として0を表したい定数なのであれば、別に良いけど、その場合わざわざ定数化するか？
 
+					>>>
+
 					defaultValue的な名前で解決するならそれで良いのだけど。
 					名前がいまいちつけづらいものはなくても良いのかも。
 					for文のi=0
 					↑あ、マジックナンバーだ！！！って警察にならないように。
-					むしろこれ定数化したらむしろ読みにくいでしょ？
+					これ定数化したらむしろ読みにくい
+
+					>>>
 
 					マジックナンバーだよ → 定数化されてない数字だよ
-					だけじゃなく、魔法の数字が解決してくれるなんてすごいね！っていみを伝えるのとでは違う。
-					```java 
-					public final Integer ZERO = 0;
-					```
-					マジックナンバーのままやないか！ってなる。
+					では、魔法の数字が解決してくれるなんてすごいね！って皮肉を伝えている。
+					
+					ので、マジックナンバーに対して共通の理解を持っていると、
+					マジックナンバーだよと指摘された際にZERO=0という修正をすることになる。
 
 					>>>
 
 					##### 匂うコード
+					においがするコードとは<br />
+					- 何をしているのかわからない
+					- 何をしているのかわかるけど、なんか違う
+					
+					>>>
 
-					---
-
-					## メソッド名 命名するときのTIPS(番外)
+					##### メソッド名 命名するときのTIPS(番外)
 
 					どのクラスに持たせるか
 					また、そのクラスの知りうる範囲はどこかを意識するとよい。
-
+					
 					>>>
 
-					
-					---
+					#### 単一責務の原則
+					意外と難しくどの単位で考えて単一責務とするのか。
+					クリーンアーキテクチャの中では
+					> モジュールはたったひとりのユーザーやステークホルダーに対して責務を負うべきである。
+					> モジュールはたったひとつのアクターに対して責務を負うべきである。
+					ということが書かれている。
 
-					## Tell Don't Ask(求めるな、命じよ)
-
-					<b>ドメインモデル貧血症</b>
-					質問として
-					Serviceに全部書いてあるほうが、何してるかわかるじゃんみたいな。
-					
-					読む人がどこの情報がほしいかわからないし、
-					基本的にすべてを一度に理解するのは人には不可能。
-					であればメソッドが分割されていて、メソッド名からそこの中でやってそうなことを
-					イメージができれば、読む人は今はこの中は必要ないなとなれば、その中を見るのは後回しにして、
-					ほんとうに今必要な情報を探すのに次に進めば良い。
-					というふうに情報取捨選択ができる。
-					トランザクションスクリプトになると、情報の取捨選択がしにくく、
-					すべてに目を通さないと行けないというのが問題。
-
-					[参考：わけるとわかる](https://irof.hateblo.jp/entry/2020/11/07/003624)
-
-					</section>
-					<section>
-						<section>
-							<h3> SOLID 原則 </h3>
-						</section>
-						<section>
-							- S 単一責務の原則
-							- O 開放閉鎖の原則
-							- L リスコフ置換の原則
-							- I インターフェース原則
-							- D 依存性逆転の原則
-						</section>
-						
-
-						<section>
-							<h4> 単一責務の原則</h4>
-							Reference 神クラス/神オブジェクト
-						</section>
-						<section>
-							<h4>開放閉鎖の法則(Open-Closed-Principle:OCP)</h4>
-							拡張に開き、修正に閉じなければならない。
-						</section>
-						<section>
-							<h4>開放閉鎖の法則(Open-Closed-Principle:OCP)</h4>
-							
-							何か要素を追加するとき、
-							<span style="color: #268bd2">既存に手を入れずに</span>
-							<span style="color: #268bd2">追加が出来る</span>
-							拡張に開き 
-							　→ 何か要素を追加するとき、既存に手を入れずに追加が出来る。
-							修正に閉じる
-							　→ 変更があるとき、対象となる箇所以外は修正しなくて良い。
-
-							消費税の変更→これは間違いなく修正なので、この場合に拡張で対応することは出来ない
-							→ 単一責務の原則が守られていれば、修正箇所は一カ所で済むはず。
-						</section>
-					</section>
+					また、神クラス/神オブジェクトにならないように。
 				</section>
 			</div>
 		</div>
