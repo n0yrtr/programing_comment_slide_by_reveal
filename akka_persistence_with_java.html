@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/solarized.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<section>
+							<div style="color: #268bd2">
+								イベントソーシング
+							</div>
+							<br />
+							<h1 class="r-fit-text">
+								akka persistence
+							</h1>
+							<div>2023/11/14</div>
+							<br />
+					</section>
+					<section>
+						<h2>目次</h2>
+						<ul>
+							<li>イベントソーシングとは</li>
+							<li>akka persistenceとjavaの理由</li>
+							<li>やってみた</li>
+							<li>感想</li>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>イベントソーシングとは</h3>
+					</section>
+					<section>
+						データを直接更新せずにデータに対して実行したイベントを記録しておくことで状態を再生する
+					</section>
+					<section>
+						<h4>よくやるＤＢ構造</h4>
+						<table>
+							<tr>
+								<th>口座番号</th><th>金額</th><th>更新日時</th>
+							</tr>
+							<tr>
+								<td>xxxx</td><td>100,000</td><td>yyyy-MM-dd</td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h4>イベントソーシングの場合</h4>
+						<table>
+							<tr>
+								<th>口座番号</th><th>イベント</th><th>発生日時</th>
+							</tr>
+							<tr>
+								<td>xxxx</td><td>口座作成</td><td>yyyy-MM-dd</td>
+							</tr>
+							<tr>
+								<td>xxxx</td><td>預金(110,000)</td><td>yyyy-MM-dd</td>
+							</tr>
+							<tr>
+								<td>xxxx</td><td>払戻(10,000)</td><td>yyyy-MM-dd</td>
+							</tr>
+						</table>
+					</section>
+					<section>
+						<h3>メリット/デメリット</h3>
+						
+						<ul>
+							<li>メリット</li>
+							<ul>
+								<li>CQRSと相性がよい</li>
+								<li>特定タイミングの状態を復元可能</li>
+								<li>イベントさえあれば、Query側は作り直せる(イベントにない情報は無理だけど)</li>
+								<li>ログレベルでDBデータを確認することが可能</li>
+							</ul>
+
+						</ul>
+					</section>
+					<section>
+						<h3>メリット/デメリット</h3>
+						
+						<ul>
+							<li>デメリット</li>
+							<ul>
+								<li>イベントをリプレイする必要がある</li>
+								<ul><li>スナップショット機能により、時間短縮は可能</li></ul>
+								<li>イベントデータの容量増加</li>
+								<ul><li>スナップショット以前のデータを消すことは可能</li></ul>
+							</ul>
+						</ul>
+					</section>
+					<section>
+						<h3>自身の経緯</h3>
+						DDDでやっていると、</br>READの内容が画面に影響受けやすく、モデルの凝集度が下がってくる</br>
+						↓</br>
+						CQRSで Command(CUD) とＱuery(R)でわける。</br>
+						↓</br>
+						CQRSはDB自体を分けても分けなくてもよいが、</br>分けることによって、</br>
+						　Command,Queryそれぞれに</br>特化したDBを選定することができる。</br>
+						↓</br>
+						EventSoucingが可能</br>
+						(Query側がEventSoucingと同じ構造のDBだとやりにくい)
+					</section>
+				</section>
+				
+				<section>
+					<section>
+					<h3>java + akka persistence</h3>
+					</section>
+					<section>
+						<h4>akkaとは</h4>
+
+						Akka とは、アクターモデル<br />で並行処理が出来るライブラリ。<br />
+						ここでは、非同期処理をアクターという登場人物がいるよね<br />と考えて
+						パターン化したと<br />考えてもらってとりあえずは大丈夫かと。
+
+					</section>
+					<section>
+						<h4>akka persistenceとは</h4>
+						状態を持ったアクターの永続化を行うモジュール<br/>
+						ただし、イベントソーシングなので、<br />actorを保存するというより、<br />
+						eventの永続化を行う。
+					</section>
+					
+					<section>
+						<h4>何故 akka persistence,とjavaか</h4>
+						<ul>
+							<li>現状、イベントソーシングのライブラリはあまりなく選択肢が限られている。</li>
+							<li>その割にはイベントのリプレイや、<br />スナップショットのタイミングなど、<br />スクラッチでの実装では考慮項目が多い</li>
+							<li>現状scalaをする機会がない</li>
+						</ul>
+
+					</section>
+					<section>
+						<h4>以下のチュートリアルを見ながら実装</h4>
+						<a href="https://doc.akka.io/docs/akka/current/typed/persistence.html">[チュートリアル 👉]</a><br/><br />
+						が、なにがなんだかに一回なってしまったため、<br />最低限の実装を行うことに路線変更<br />
+						(chatgptに手伝ってもらいました)<br /><br /><br /><br />
+						<h4>実装したもの</h4>
+						<a href="https://github.com/n0yrtr/akka_persistence_study_java">[github 👉]</a>
+					</section>
+					<section>
+						<h4>感想</h4>
+						<ul>
+							<li>あまりjavaでakka persistenceとやっている情報が少なくchatGptに聞きながらやった</li>
+							<li>levelDBの情報が少ない</li>
+							<li>
+								実際にakka persistenceとを使うとquery側は別DBじゃないと検索が出来ないので、<br />
+								メッセージングなどで、query側に連携する必要がある。
+							</li>
+							<li>→そのレベル構築をし始めると複雑さがどれくらいあがるか。</li>
+						</ul>
+					</section>
+					<section>
+						<h4>感想</h4>
+						<ul>
+							<li>
+							イベントソーシングの考え方自体はメリットを考えると非常に面白いと思っていて、<br />
+							引き続き勉強をしていきたい。
+							</li>
+							<li>まだ肝心のイベントリプレイの実装が必要な部分が出来ていないのでやりたい</li>
+						</ul>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				slideNumber: true,
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
